@@ -1,0 +1,18 @@
+{
+  "name": "fixmitra",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-ready home services booking and management platform",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "build": "node scripts/build.js",
+    "test": "node --test --test-concurrency=1",
+    "setup-admin": "node scripts/setup-admin.js",
+    "reset-demo": "node scripts/reset-demo.js"
+  },
+  "engines": {"node": ">=20 <25"},
+  "dependencies": {},
+  "devDependencies": {}
+}

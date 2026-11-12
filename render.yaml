@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: fixmitra
+    runtime: docker
+    plan: starter
+    healthCheckPath: /
+    autoDeploy: false
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DATABASE_FILE
+        value: /var/data/fixmitra.db
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_NAME
+        value: FixMitra Administrator
+    disk:
+      name: fixmitra-data
+      mountPath: /var/data
+      sizeGB: 1
