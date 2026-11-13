@@ -1,18 +1,15 @@
 const app = require('../src/app');
+const url = require('url');
 
 module.exports = (req, res) => {
-  if (req.url && req.url.startsWith('/debug-test')) {
-    return res.end(JSON.stringify({
-      url: req.url,
-      originalUrl: req.originalUrl,
-      headers: req.headers
-    }, null, 2));
-  }
-  const matched = req.headers['x-matched-path'] || req.headers['x-now-route-matches'];
-  if (matched && !matched.startsWith('/api')) {
-    const qIndex = req.url.indexOf('?');
-    const query = qIndex !== -1 ? req.url.slice(qIndex) : '';
-    req.url = matched + query;
+  const parsed = url.parse(req.url, true);
+  if (parsed.query && parsed.query.__path !== undefined) {
+    const rawPath = parsed.query.__path;
+    const cleanPath = rawPath.startsWith('/') ? rawPath : '/' + rawPath;
+    delete parsed.query.__path;
+    delete parsed.search;
+    parsed.pathname = cleanPath;
+    req.url = url.format(parsed);
   }
   return app(req, res);
 };
