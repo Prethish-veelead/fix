@@ -9,7 +9,10 @@ module.exports = (req, res) => {
     delete parsed.query.__path;
     delete parsed.search;
     parsed.pathname = cleanPath;
-    req.url = url.format(parsed);
+    const formatted = url.format(parsed);
+    req.url = formatted;
+    req.originalUrl = formatted;
+    req._parsedUrl = undefined;
   }
   return app(req, res);
 };
