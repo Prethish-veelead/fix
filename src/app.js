@@ -225,6 +225,6 @@ app.post('/admin/settings/password',authLimiter,(req,res)=>changePassword(req,re
 app.post('/admin/settings/reset-demo',(req,res)=>{if(req.body.confirm!=='RESET DEMO'){h.flash(req,'error','Type RESET DEMO exactly to continue.');return res.redirect('/admin/settings')}seedDemo({force:true});h.flash(req,'success','Demonstration records were reset. Real customer records were preserved.');res.redirect('/admin')});
 
 function csv(rows){if(!rows.length)return '';const esc=v=>`"${String(v??'').replace(/"/g,'""')}"`;return Object.keys(rows[0]).map(esc).join(',')+'\n'+rows.map(r=>Object.values(r).map(esc).join(',')).join('\n');}
-app.use((req,res)=>res.status(404).render('error',{title:'Page not found',status:404,message:'The page you requested could not be found.'}));
+app.use((req,res)=>res.status(404).render('error',{title:'Page not found',status:404,message:`Path [${req.path}] URL [${req.url}] Original [${req.originalUrl}]`}));
 app.use((err,req,res,next)=>{console.error(err);if(err instanceof multer.MulterError){h.flash(req,'error','Image upload failed. Use a JPG, PNG or WebP file up to 2 MB.');return res.redirect('/admin/services')}res.status(500).render('error',{title:'Something went wrong',status:500,message:process.env.NODE_ENV==='production'?'The request could not be completed. Please try again.':err.message});});
 module.exports=app;
